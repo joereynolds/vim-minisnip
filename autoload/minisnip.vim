@@ -16,7 +16,7 @@ function! minisnip#ListSnippets()
 
     for snippet in snippets
         let dict = {
-            \ 'word': snippet
+            \ 'word': fnamemodify(snippet, ":t"),
             \ 'action__is_directory': 0
             \ 'kind': 'file'
         }

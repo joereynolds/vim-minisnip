@@ -4,17 +4,52 @@ function! minisnip#ListSnippets()
     "
     "This is used for autocompletion sources i.e. deoplete-minisnip
 
+    "setup our default dictionary for deoplete"
+    let candidates = map([], "{
+        \ 'word' : '...',
+        \ 'action__is_directory': 0,
+        \ 'kind' : 'file',
+    \}")
+
     "Returns a list of all the snippets for a filetype
     let snippets = globpath(g:minisnip_dir, '*_' . &filetype . '*', 1, 1)
 
-    return snippets
+    for snippet in snippets
+        let dict = {
+            \ 'word': snippet
+            \ 'action__is_directory': 0
+            \ 'kind': 'file'
+        }
+
+        call add(candidates, dict)
+    endfor
+
+    return candidates
 endfunction
 
-    "set filetype=php
-    "let snippets = globpath(g:minisnip_dir, '*_' . &filetype . '*', 1, 1)
-    "echo snippets
-    "set filetype=vim
-
+"Quick way of seeing output
+"    set filetype=php
+"    let snippets = globpath(g:minisnip_dir, '*_' . &filetype . '*', 1, 1)
+"
+"    let candidates = map([], "{
+"        \ 'word' : '...',
+"        \ 'action__is_directory': 0,
+"        \ 'kind' : 'file',
+"    \}")
+"
+"    for snippet in snippets
+"
+"        let dict = {
+"            \ 'word': snippet,
+"            \ 'action__is_directory': 0,
+"            \ 'kind': 'file',
+"        \}
+"
+"        call add(candidates, dict)
+"
+"    endfor
+"    echo candidates
+"    set filetype=vim
 
 function! minisnip#ShouldTrigger()
     silent! unlet! s:snippetfile

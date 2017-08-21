@@ -1,3 +1,21 @@
+function! minisnip#ListSnippets()
+    "Lists all snippets for the current filetype
+    "of the file you are editing
+    "
+    "This is used for autocompletion sources i.e. deoplete-minisnip
+
+    "Returns a list of all the snippets for a filetype
+    let snippets = globpath(g:minisnip_dir, '*_' . &filetype . '*', 1, 1)
+
+    return snippets
+endfunction
+
+    "set filetype=php
+    "let snippets = globpath(g:minisnip_dir, '*_' . &filetype . '*', 1, 1)
+    "echo snippets
+    "set filetype=vim
+
+
 function! minisnip#ShouldTrigger()
     silent! unlet! s:snippetfile
     let l:cword = matchstr(getline('.'), '\v\w+%' . col('.') . 'c')

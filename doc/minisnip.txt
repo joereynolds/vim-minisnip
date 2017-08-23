@@ -13,6 +13,7 @@ License: MIT
 1. Overview                    |minisnip-overview|
 2. Mappings                    |minisnip-mappings|
 3. Configuration               |minisnip-configuration|
+4. Miscellaneous               |minisnip-miscellaneous|
 
 ===============================================================================
 OVERVIEW                                                    *minisnip-overview*
@@ -104,3 +105,16 @@ of how it can be used: >
 <
 This will automatically fill the `#define` line with the value entered on the
 `#ifndef` line upon jumping to it.
+
+===============================================================================
+CONFIGURATION                                          *minisnip-configuration*
+
+-------------------------------------------------------------------------------
+MISCELLANEOUS                                          *minisnip-miscellaneous*
+
+Syntax highlighting for minisnipts:
+
+If you would like to have the minisnip delimeters hightlighted for minisnip files,
+add the following to your vimrc: >
+    autocmd BufRead,BufNewFile /path/to/minisnips/* set filetype=minisnip
+<

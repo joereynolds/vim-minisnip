@@ -107,10 +107,9 @@ This will automatically fill the `#define` line with the value entered on the
 `#ifndef` line upon jumping to it.
 
 ===============================================================================
-CONFIGURATION                                          *minisnip-configuration*
+MISCELLANEOUS                                          *minisnip-miscellaneous*
 
 -------------------------------------------------------------------------------
-MISCELLANEOUS                                          *minisnip-miscellaneous*
 
 Syntax highlighting for minisnipts:
 

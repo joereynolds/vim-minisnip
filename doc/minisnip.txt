@@ -114,7 +114,6 @@ MISCELLANEOUS                                          *minisnip-miscellaneous*
 Syntax highlighting for minisnips:
 
 If you would like to have the minisnip delimeters hightlighted for better
-for better visibility in your minisnip files, add the following to your 
-`.vimrc`: >
+visibility in your minisnip files, add the following to your `.vimrc`: >
     autocmd BufRead,BufNewFile /path/to/minisnips/* set filetype=minisnip
 <

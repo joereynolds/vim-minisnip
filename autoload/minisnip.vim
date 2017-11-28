@@ -3,18 +3,20 @@ function! minisnip#ShouldTrigger()
     let l:cword = matchstr(getline('.'), '\v\f+%' . col('.') . 'c')
 
     " look for a snippet by that name
-    let l:snippetfile = g:minisnip_dir . '/' . l:cword
-    let l:ft_snippetfile = g:minisnip_dir . '/_' . &filetype . '_' . l:cword
-    if filereadable(l:ft_snippetfile)
-        " filetype snippets override general snippets
-        let l:snippetfile = l:ft_snippetfile
-    endif
+    for l:dir in split(g:minisnip_dir, ':')
+        let l:snippetfile = l:dir . '/' . l:cword
+        let l:ft_snippetfile = l:dir . '/_' . &filetype . '_' . l:cword
+        if filereadable(l:ft_snippetfile)
+            " filetype snippets override general snippets
+            let l:snippetfile = l:ft_snippetfile
+        endif
 
-    " make sure the snippet exists
-    if filereadable(l:snippetfile)
-        let s:snippetfile = l:snippetfile
-        return 1
-    endif
+        " make sure the snippet exists
+        if filereadable(l:snippetfile)
+            let s:snippetfile = l:snippetfile
+            return 1
+        endif
+    endfor
 
     return search(g:minisnip_delimpat, 'e')
 endfunction

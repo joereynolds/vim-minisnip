@@ -107,6 +107,14 @@ of how it can be used: >
 This will automatically fill the `#define` line with the value entered on the
 `#ifndef` line upon jumping to it.
 
+-------------------------------------------------------------------------------
+                                                *'g:minisnip_disable_mappings'*
+Default: 0
+
+Disables the trigger mappings >
+    let g:minisnip_disable_mappings = 1
+<
+
 ===============================================================================
 MISCELLANEOUS                                          *minisnip-miscellaneous*
 

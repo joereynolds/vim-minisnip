@@ -11,6 +11,7 @@ let g:minisnip_startdelim = get(g:, 'minisnip_startdelim', '{{+')
 let g:minisnip_enddelim = get(g:, 'minisnip_enddelim', '+}}')
 let g:minisnip_evalmarker = get(g:, 'minisnip_evalmarker', '~')
 let g:minisnip_backrefmarker = get(g:, 'minisnip_backrefmarker', '\\~')
+let g:minisnip_disable_mappings = get(g:, 'minisnip_disable_mappings', 0)
 
 " this is the pattern used to find placeholders
 let g:minisnip_delimpat = '\V' . g:minisnip_startdelim . '\.\{-}' . g:minisnip_enddelim
@@ -26,7 +27,7 @@ snoremap <script> <expr> <Plug>Minisnip minisnip#ShouldTrigger() ?
             \eval('"' . escape(g:minisnip_trigger, '\"<') . '"')
 
 " add the default mappings if the user hasn't defined any
-if !hasmapto('<Plug>Minisnip')
+if !g:minisnip_disable_mappings && !hasmapto('<Plug>Minisnip')
     execute 'imap <unique> ' . g:minisnip_trigger . ' <Plug>Minisnip'
     execute 'smap <unique> ' . g:minisnip_trigger . ' <Plug>Minisnip'
 endif

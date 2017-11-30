@@ -5,11 +5,15 @@ function! minisnip#ShouldTrigger()
     " look for a snippet by that name
     for l:dir in split(g:minisnip_dir, ':')
         let l:snippetfile = l:dir . '/' . l:cword
-        let l:ft_snippetfile = l:dir . '/_' . &filetype . '_' . l:cword
-        if filereadable(l:ft_snippetfile)
-            " filetype snippets override general snippets
-            let l:snippetfile = l:ft_snippetfile
-        endif
+
+        " filetype snippets override general snippets
+        for l:filetype in split(&filetype, '\.')
+          let l:ft_snippetfile = l:dir . '/_' . l:filetype . '_' . l:cword
+          if filereadable(l:ft_snippetfile)
+              let l:snippetfile = l:ft_snippetfile
+              break
+          endif
+        endfor
 
         " make sure the snippet exists
         if filereadable(l:snippetfile)

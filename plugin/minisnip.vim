@@ -24,9 +24,16 @@ inoremap <script> <expr> <Plug>Minisnip minisnip#ShouldTrigger() ?
 snoremap <script> <expr> <Plug>Minisnip minisnip#ShouldTrigger() ?
             \"\<esc>:call \minisnip#Minisnip()\<cr>" :
             \eval('"' . escape(g:minisnip_trigger, '\"<') . '"')
+inoremap <silent> <Plug>MinisnipComplete <C-r>=minisnip#complete()<CR>
 
 " add the default mappings if the user hasn't defined any
 if !hasmapto('<Plug>Minisnip')
     execute 'imap <unique> ' . g:minisnip_trigger . ' <Plug>Minisnip'
     execute 'smap <unique> ' . g:minisnip_trigger . ' <Plug>Minisnip'
+endif
+" Completion
+if !hasmapto('<Plug>MinisnipComplete')
+    imap <C-x><C-t> <Plug>MinisnipComplete
+    inoremap <expr> <C-t> pumvisible() ?  "\<C-n>" : "\<C-t>"
+    imap <expr> <CR> pumvisible() ? "\<Tab>" : "\<CR>"
 endif

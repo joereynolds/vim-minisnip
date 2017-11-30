@@ -111,3 +111,53 @@ function! s:SelectPlaceholder()
     " restore old value of s register
     let @s = l:old_s
 endfunction
+
+function! minisnip#complete() abort
+    " Locate the start of the word
+    let l:line = getline('.')
+    let l:start = col('.') - 1
+    while l:start > 0 && l:line[l:start - 1] =~ '\a'
+        let l:start -= 1
+    endwhile
+    let l:base = l:line[l:start : col('.')-1]
+
+    " Load all snippets that match.
+    let l:filetypes = split(&filetype, '\.')
+    let l:all = []
+    for l:dir in split(g:minisnip_dir, ':')
+        for l:path in glob(l:dir . '/*', 0, 1)
+            let l:f = fnamemodify(l:path, ':t')
+            let l:ft = l:f[1:stridx(l:f[1:], '_')]
+            let l:name = l:f
+
+            " Filetype snippet
+            if l:f[0] is# '_'
+                if index(l:filetypes, l:ft) is -1
+                    continue
+                endif
+                let l:name = l:f[stridx(l:f[1:], '_') + 2:]
+            endif
+
+            if l:name !~? '^' . l:base
+                continue
+            endif
+            let l:all += [[l:name, readfile(l:path)]]
+        endfor
+    endfor
+    call sort(l:all, {i1, i2 -> l:i1[0] == l:i2[0] ? 0 : l:i1[0] > l:i2[0] ? 1 : -1})
+
+    " Format how complete() expects it.
+    let l:res = []
+    for l:m in l:all
+        call add(l:res, {
+            \ 'icase': 1,
+            \ 'word': l:m[0],
+            \ 'abbr': l:m[0],
+            \ 'menu': l:m[1][0],
+            \ 'info': join(l:m[1], "\n"),
+        \ })
+    endfor
+
+    call complete(l:start + 1, l:res)
+    return ''
+endfunction

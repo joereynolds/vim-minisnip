@@ -39,6 +39,12 @@ MAPPINGS                                                    *minisnip-mappings*
                     placeholder and enter select mode.
                     In select mode, jump to the next placeholder.
 
+-------------------------------------------------------------------------------
+                    *minisnip_<C-x><C-t>*
+<C-x><C-t>          Start |ins-completion| for the snippet. Press <C-t> again
+                    to go to the next snippet; press <CR> or <Tab> to complete
+                    it.
+
 ===============================================================================
 CONFIGURATION                                          *minisnip-configuration*
 

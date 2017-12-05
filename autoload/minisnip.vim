@@ -1,4 +1,6 @@
-function! minisnip#ShouldTrigger()
+let s:placeholder_texts = []
+
+function! minisnip#ShouldTrigger() abort
     silent! unlet! s:snippetfile
     let l:cword = matchstr(getline('.'), '\v\f+%' . col('.') . 'c')
 
@@ -26,7 +28,7 @@ function! minisnip#ShouldTrigger()
 endfunction
 
 " main function, called on press of Tab (or whatever key Minisnip is bound to)
-function! minisnip#Minisnip()
+function! minisnip#Minisnip() abort
     if exists("s:snippetfile")
         " reset placeholder text history (for backrefs)
         let s:placeholder_texts = []
@@ -43,6 +45,11 @@ function! minisnip#Minisnip()
         " select the first placeholder
         call s:SelectPlaceholder()
     else
+        " Make sure '< mark is set so the normal command won't error out.
+        if getpos("'<") == [0, 0, 0, 0]
+            call setpos("'<", getpos('.'))
+        endif
+
         " save the current placeholder's text so we can backref it
         let l:old_s = @s
         normal! ms"syv`<`s
@@ -54,7 +61,7 @@ function! minisnip#Minisnip()
 endfunction
 
 " this is the function that finds and selects the next placeholder
-function! s:SelectPlaceholder()
+function! s:SelectPlaceholder() abort
     " don't clobber s register
     let l:old_s = @s
 

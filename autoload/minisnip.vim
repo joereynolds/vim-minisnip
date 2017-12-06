@@ -116,10 +116,13 @@ function! minisnip#complete() abort
     " Locate the start of the word
     let l:line = getline('.')
     let l:start = col('.') - 1
-    while l:start > 0 && l:line[l:start - 1] =~ '\a'
+    while l:start > 0 && l:line[l:start - 1] =~? '\a'
         let l:start -= 1
     endwhile
     let l:base = l:line[l:start : col('.')-1]
+    if l:base is# ' '
+        let l:base = ''
+    endif
 
     " Load all snippets that match.
     let l:filetypes = split(&filetype, '\.')

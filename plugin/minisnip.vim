@@ -1,4 +1,4 @@
-if exists("g:loaded_minisnip")
+if exists('g:loaded_minisnip')
     finish
 endif
 
@@ -18,22 +18,22 @@ let g:minisnip_delimpat = '\V' . g:minisnip_startdelim . '\.\{-}' . g:minisnip_e
 " plug mappings
 " the eval/escape charade is to convert ex. <Tab> into a literal tab, first
 " making it \<Tab> and then eval'ing that surrounded by double quotes
-inoremap <script> <expr> <Plug>Minisnip minisnip#ShouldTrigger() ?
+inoremap <script> <expr> <Plug>(minisnip) minisnip#ShouldTrigger() ?
             \"x\<bs>\<esc>:call \minisnip#Minisnip()\<cr>" :
             \eval('"' . escape(g:minisnip_trigger, '\"<') . '"')
-snoremap <script> <expr> <Plug>Minisnip minisnip#ShouldTrigger() ?
+snoremap <script> <expr> <Plug>(minisnip) minisnip#ShouldTrigger() ?
             \"\<esc>:call \minisnip#Minisnip()\<cr>" :
             \eval('"' . escape(g:minisnip_trigger, '\"<') . '"')
-inoremap <silent> <Plug>MinisnipComplete <C-r>=minisnip#complete()<CR>
+inoremap <silent> <Plug>(minisnip-complete) <C-r>=minisnip#complete()<CR>
 
 " add the default mappings if the user hasn't defined any
-if !hasmapto('<Plug>Minisnip')
-    execute 'imap <unique> ' . g:minisnip_trigger . ' <Plug>Minisnip'
-    execute 'smap <unique> ' . g:minisnip_trigger . ' <Plug>Minisnip'
+if !hasmapto('<Plug>(minisnip)')
+    execute 'imap <unique> ' . g:minisnip_trigger . ' <Plug>(minisnip)'
+    execute 'smap <unique> ' . g:minisnip_trigger . ' <Plug>(minisnip)'
 endif
 " Completion
-if !hasmapto('<Plug>MinisnipComplete')
-    imap <C-x><C-t> <Plug>MinisnipComplete
+if !hasmapto('<Plug>(minisnip-complete)')
+    imap <C-x><C-t> <Plug>(minisnip-complete)
     inoremap <expr> <C-t> pumvisible() ?  "\<C-n>" : "\<C-t>"
     imap <expr> <CR> pumvisible() ? "\<Tab>" : "\<CR>"
 endif

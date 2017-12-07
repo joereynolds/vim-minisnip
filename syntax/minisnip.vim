@@ -24,8 +24,8 @@ if exists("b:current_syntax")
 endif
 
 " Get the minisnip defined delimiters
-exe "syntax match minisnipKeyword /" . g:minisnip_startdelim . "/"
-exe "syntax match minisnipKeyword /" . g:minisnip_enddelim . "/"
+execute "syntax match minisnipKeyword /" . g:minisnip_startdelim . "/"
+execute "syntax match minisnipKeyword /" . g:minisnip_enddelim . "/"
 
 highlight default link minisnipKeyword Keyword
 

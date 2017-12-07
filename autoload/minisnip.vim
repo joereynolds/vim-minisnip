@@ -29,19 +29,22 @@ endfunction
 
 " main function, called on press of Tab (or whatever key Minisnip is bound to)
 function! minisnip#Minisnip() abort
-    if exists("s:snippetfile")
+    if exists('s:snippetfile')
         " reset placeholder text history (for backrefs)
         let s:placeholder_texts = []
         let s:placeholder_text = ''
         " remove the snippet name
         normal! "_diw
         " adjust the indentation, use the current line as reference
-        let ws = matchstr(getline(line('.')), '^\s\+')
-        let lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : ws.v:val')
-        " insert the snippet
-        call append(line('.'), lns)
-        " remove the empty line before the snippet
-        normal! "_dd
+        let l:ws = matchstr(getline(line('.')), '^\s\+')
+        let l:snippet = map(readfile(s:snippetfile), 'empty(v:val)? v:val : l:ws.v:val')
+        " Add text from current line to the snippet.
+        let l:line = getline('.')
+        let l:pos = col('.')
+        let l:snippet[0] = l:line[:l:pos - 1] . l:snippet[0]
+        let l:snippet[len(l:snippet) - 1] .= l:line[(l:pos):]
+        " Insert the snippet at the cursor position.
+        call setline('.', l:snippet)
         " select the first placeholder
         call s:SelectPlaceholder()
     else
@@ -72,14 +75,14 @@ function! s:SelectPlaceholder() abort
     "   highlighting all the other placeholders
     try
         " gn misbehaves when 'wrapscan' isn't set (see vim's #1683)
-        let [l:ws, &ws] = [&ws, 1]
+        let [l:ws, &wrapscan] = [&wrapscan, 1]
         silent keeppatterns execute 'normal! /' . g:minisnip_delimpat . "/e\<cr>gn\"sy"
     catch /E486:/
         " There's no placeholder at all, enter insert mode
         call feedkeys('i', 'n')
         return
     finally
-        let &ws = l:ws
+        let &wrapscan = l:ws
     endtry
 
     " save the contents of the previous placeholder (for backrefs)
@@ -95,15 +98,15 @@ function! s:SelectPlaceholder() abort
     " is this placeholder marked as 'evaluate'?
     if @s =~ '\V\^' . g:minisnip_evalmarker
         " remove the marker
-        let @s=substitute(@s, '\V\^' . g:minisnip_evalmarker, '', '')
+        let @s = substitute(@s, '\V\^' . g:minisnip_evalmarker, '', '')
         " substitute in any backrefs
-        let @s=substitute(@s, '\V' . g:minisnip_backrefmarker . '\(\d\)',
+        let @s = substitute(@s, '\V' . g:minisnip_backrefmarker . '\(\d\)',
             \"\\=\"'\" . substitute(get(
             \    s:placeholder_texts,
             \    len(s:placeholder_texts) - str2nr(submatch(1)), ''
             \), \"'\", \"''\", 'g') . \"'\"", 'g')
         " evaluate what's left
-        let @s=eval(@s)
+        let @s = eval(@s)
     endif
 
     if empty(@s)

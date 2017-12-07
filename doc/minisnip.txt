@@ -53,10 +53,14 @@ CONFIGURATION                                          *minisnip-configuration*
 Default: '~/.vim/minisnip'
 
 A colon-separated list of directories to look for snippet files, similar to
-$PATH. The first match will be used. For example to share system-wide
-snippets: >
+`$PATH`. The first match will be used.
+
+For example to share system-wide snippets: >
     let g:minisnip_dir = '/usr/share/minisnip:~/.vim/minisnip'
 <
+Minisnip adds the `minisnip` |filetype| to all files matching `*/minisnip/*` .
+If you store your snippets in another directory then you'll have to create
+your own |autocmd| to do this.
 
 -------------------------------------------------------------------------------
                                                          *'g:minisnip_trigger'*
@@ -112,15 +116,3 @@ of how it can be used: >
 <
 This will automatically fill the `#define` line with the value entered on the
 `#ifndef` line upon jumping to it.
-
-===============================================================================
-MISCELLANEOUS                                          *minisnip-miscellaneous*
-
--------------------------------------------------------------------------------
-
-Syntax highlighting for minisnips:
-
-If you would like to have the minisnip delimiters highlighted for better
-visibility in your minisnip files, add the following to your `.vimrc`: >
-    autocmd BufRead,BufNewFile */minisnip/_* setlocal filetype=minisnip
-<

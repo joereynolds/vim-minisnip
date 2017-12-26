@@ -120,16 +120,16 @@ function! s:SelectPlaceholder() abort
     let @s = l:old_s
 endfunction
 
-function! minisnip#complete() abort
-    " Locate the start of the word
-    let l:line = getline('.')
-    let l:start = col('.') - 1
-    while l:start > 0 && l:line[l:start - 1] =~? '\a'
-        let l:start -= 1
-    endwhile
-    let l:base = l:line[l:start : col('.')-1]
-    if l:base is# ' '
-        let l:base = ''
+function! minisnip#completefunc(findstart, base) abort
+    if a:findstart
+        " Locate the start of the word
+        let l:line = getline('.')
+        let l:start = col('.') - 1
+        while l:start > 0 && l:line[l:start - 1] =~? '\a'
+            let l:start -= 1
+        endwhile
+
+        return l:start
     endif
 
     " Load all snippets that match.
@@ -152,25 +152,32 @@ function! minisnip#complete() abort
             if l:name !~? '^' . l:base
                 continue
             endif
-            let l:all += [[l:name, readfile(l:path)]]
+
+            let l:content = readfile(l:path)
+            call add(l:all, {
+                        \ 'icase': 1,
+                        \ 'word': l:name,
+                        \ 'abbr': l:name,
+                        \ 'menu': l:content[0],
+                        \ 'info': join(l:content, "\n"),
+                        \ })
         endfor
     endfor
-    call sort(l:all, {i1, i2 -> l:i1[0] == l:i2[0] ? 0 : l:i1[0] > l:i2[0] ? 1 : -1})
+    call sort(l:all, {i1, i2 -> i1.word == i2.word ? 0 : i1.word > i2.word ? 1 : -1})
 
-    " Format how complete() expects it.
-    let l:res = []
-    for l:m in l:all
-        call add(l:res, {
-            \ 'icase': 1,
-            \ 'word': l:m[0],
-            \ 'abbr': l:m[0],
-            \ 'menu': l:m[1][0],
-            \ 'info': join(l:m[1], "\n"),
-        \ })
-    endfor
+    return l:all
+endfunction
 
-    call complete(l:start + 1, l:res)
-    return ''
+function! minisnip#complete() abort
+    let l:start = minisnip#completefunc(1, '')
+    let l:base = l:line[l:start : col('.')-1]
+    if l:base is# ' '
+        let l:base = ''
+    endif
+
+    let l:all = minisnip#completefunc(0, l:base)
+
+    call complete(l:start + 1, l:all)
 endfunction
 
 " Get the path separator for this platform.

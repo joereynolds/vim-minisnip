@@ -149,7 +149,7 @@ function! minisnip#completefunc(findstart, base) abort
                 let l:name = l:f[stridx(l:f[1:], '_') + 2:]
             endif
 
-            if l:name !~? '^' . l:base
+            if l:name !~? '^' . a:base
                 continue
             endif
 

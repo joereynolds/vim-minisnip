@@ -169,6 +169,7 @@ function! minisnip#completefunc(findstart, base) abort
 endfunction
 
 function! minisnip#complete() abort
+    let l:line = getline('.')
     let l:start = minisnip#completefunc(1, '')
     let l:base = l:line[l:start : col('.')-1]
     if l:base is# ' '

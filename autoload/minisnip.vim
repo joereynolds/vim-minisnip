@@ -34,15 +34,33 @@ function! minisnip#Minisnip() abort
         " reset placeholder text history (for backrefs)
         let s:placeholder_texts = []
         let s:placeholder_text = ''
-        " remove the snippet name
-        normal! "_diw
         " adjust the indentation, use the current line as reference
         let ws = matchstr(getline(line('.')), '^\s\+')
         let lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : ws.v:val')
+
+        " remove the snippet name
+        normal! "_diw
+        let lengthOfLine = strwidth(getline('.'))
+        if lengthOfLine > col('.')
+           "there is something following the snippet
+           let endOfLine = strpart(getline(line('.')), col('.'))
+           normal! "_D
+        endif
+
+
         " insert the snippet
         call append(line('.'), lns)
+
+        "add the end of the line after the snippet
+        if lengthOfLine > col('.')
+           "there is something following the snippet
+           execute ':normal! ' . len(lns) . 'j'
+           call append(line('.'), endOfLine)
+           normal! J
+           execute ':normal! ' . len(lns) . 'k'
+        endif
         " remove the empty line before the snippet
-        normal! "_dd
+        normal! J
         " select the first placeholder
         call s:SelectPlaceholder()
     else

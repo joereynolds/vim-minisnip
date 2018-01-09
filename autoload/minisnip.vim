@@ -46,6 +46,7 @@ function! minisnip#Minisnip() abort
         if l:lengthOfLine > col('.')
            "there is something following the snippet
            let l:endOfLine = strpart(getline(line('.')), col('.'))
+
            normal! "_D
         endif
 

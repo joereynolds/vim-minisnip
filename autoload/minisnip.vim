@@ -39,7 +39,9 @@ function! minisnip#Minisnip() abort
         let l:lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : l:ws.v:val')
 
         " remove the snippet name
-        normal! "_diw
+        let l:cword = matchstr(getline('.'), '\v\f+%' . col('.') . 'c')
+        execute ':normal! "_d' . len(l:cword) . 'h'
+
         let l:lengthOfLine = strwidth(getline('.'))
         if l:lengthOfLine > col('.')
            "there is something following the snippet

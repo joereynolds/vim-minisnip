@@ -30,34 +30,34 @@ endfunction
 
 " main function, called on press of Tab (or whatever key Minisnip is bound to)
 function! minisnip#Minisnip() abort
-    if exists("s:snippetfile")
+    if exists('s:snippetfile')
         " reset placeholder text history (for backrefs)
         let s:placeholder_texts = []
         let s:placeholder_text = ''
         " adjust the indentation, use the current line as reference
-        let ws = matchstr(getline(line('.')), '^\s\+')
-        let lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : ws.v:val')
+        let l:ws = matchstr(getline(line('.')), '^\s\+')
+        let l:lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : l:ws.v:val')
 
         " remove the snippet name
         normal! "_diw
-        let lengthOfLine = strwidth(getline('.'))
-        if lengthOfLine > col('.')
+        let l:lengthOfLine = strwidth(getline('.'))
+        if l:lengthOfLine > col('.')
            "there is something following the snippet
-           let endOfLine = strpart(getline(line('.')), col('.'))
+           let l:endOfLine = strpart(getline(line('.')), col('.'))
            normal! "_D
         endif
 
 
         " insert the snippet
-        call append(line('.'), lns)
+        call append(line('.'), l:lns)
 
         "add the end of the line after the snippet
-        if lengthOfLine > col('.')
+        if l:lengthOfLine > col('.')
            "there is something following the snippet
-           execute ':normal! ' . len(lns) . 'j'
-           call append(line('.'), endOfLine)
+           execute ':normal! ' . len(l:lns) . 'j'
+           call append(line('.'), l:endOfLine)
            normal! J
-           execute ':normal! ' . len(lns) . 'k'
+           execute ':normal! ' . len(l:lns) . 'k'
         endif
         " remove the empty line before the snippet
         normal! J
@@ -91,14 +91,14 @@ function! s:SelectPlaceholder() abort
     "   highlighting all the other placeholders
     try
         " gn misbehaves when 'wrapscan' isn't set (see vim's #1683)
-        let [l:ws, &ws] = [&ws, 1]
+        let [l:ws, &wrapscan] = [&wrapscan, 1]
         silent keeppatterns execute 'normal! /' . g:minisnip_delimpat . "/e\<cr>gn\"sy"
     catch /E486:/
         " There's no placeholder at all, enter insert mode
         call feedkeys('i', 'n')
         return
     finally
-        let &ws = l:ws
+        let &wrapscan = l:ws
     endtry
 
     " save the contents of the previous placeholder (for backrefs)

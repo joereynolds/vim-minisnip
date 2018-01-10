@@ -2,16 +2,17 @@ let s:placeholder_texts = []
 
 function! minisnip#ShouldTrigger() abort
     silent! unlet! s:snippetfile
-    let l:cword = matchstr(getline('.'), '\v\f+%' . col('.') . 'c')
+    let s:cword = matchstr(getline('.'), '\v\f+%' . col('.') . 'c')
+    let s:begcol = col('.')
 
     " look for a snippet by that name
     for l:dir in split(g:minisnip_dir, s:pathsep())
         let l:dir = fnamemodify(l:dir, ':p')
-        let l:snippetfile = l:dir . '/' . l:cword
+        let l:snippetfile = l:dir . '/' . s:cword
 
         " filetype snippets override general snippets
         for l:filetype in split(&filetype, '\.')
-          let l:ft_snippetfile = l:dir . '/_' . l:filetype . '_' . l:cword
+          let l:ft_snippetfile = l:dir . '/_' . l:filetype . '_' . s:cword
           if filereadable(l:ft_snippetfile)
               let l:snippetfile = l:ft_snippetfile
               break
@@ -30,37 +31,49 @@ endfunction
 
 " main function, called on press of Tab (or whatever key Minisnip is bound to)
 function! minisnip#Minisnip() abort
-    if exists("s:snippetfile")
+    if exists('s:snippetfile')
         " reset placeholder text history (for backrefs)
         let s:placeholder_texts = []
         let s:placeholder_text = ''
         " adjust the indentation, use the current line as reference
-        let ws = matchstr(getline(line('.')), '^\s\+')
-        let lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : ws.v:val')
+        let l:ws = matchstr(getline(line('.')), '^\s\+')
+        let l:lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : l:ws.v:val')
 
-        " remove the snippet name
-        normal! "_diw
-        let lengthOfLine = strwidth(getline('.'))
-        if lengthOfLine > col('.')
-           "there is something following the snippet
-           let endOfLine = strpart(getline(line('.')), col('.'))
+        " remove the snippet keyword
+        " go to the position at the beginning of the snippet
+        execute ':normal! '.(s:begcol - strchars(s:cword)).'|'
+        " delete the snippet
+        execute ':normal! '.strchars(s:cword).'x'
+
+        if col('.') >= (s:begcol - strchars(s:cword))
+           " there is something following the snippet
+           let l:keepEndOfLine = 1
+           let l:endOfLine = strpart(getline(line('.')), (col('.') - 1))
            normal! "_D
+        else
+           let l:keepEndOfLine = 0
         endif
-
 
         " insert the snippet
-        call append(line('.'), lns)
+        call append(line('.'), l:lns)
 
-        "add the end of the line after the snippet
-        if lengthOfLine > col('.')
-           "there is something following the snippet
-           execute ':normal! ' . len(lns) . 'j'
-           call append(line('.'), endOfLine)
-           normal! J
-           execute ':normal! ' . len(lns) . 'k'
+        if l:keepEndOfLine == 1
+           " add the end of the line after the snippet
+           execute ':normal! ' . len(l:lns) . 'j'
+           call append((line('.')), l:endOfLine)
+           join!
+           execute ':normal! ' . len(l:lns) . 'k'
         endif
-        " remove the empty line before the snippet
-        normal! J
+
+        if strchars(l:ws) > 0
+           " remove the padding of the first line of the snippet
+           execute ':normal! j0' . strchars(l:ws) . 'xk$'
+        endif
+        join!
+
+        " go to the beginning of the snippet
+        execute ':normal! '.(s:begcol - strchars(s:cword)).'|'
+
         " select the first placeholder
         call s:SelectPlaceholder()
     else
@@ -91,14 +104,14 @@ function! s:SelectPlaceholder() abort
     "   highlighting all the other placeholders
     try
         " gn misbehaves when 'wrapscan' isn't set (see vim's #1683)
-        let [l:ws, &ws] = [&ws, 1]
+        let [l:ws, &wrapscan] = [&wrapscan, 1]
         silent keeppatterns execute 'normal! /' . g:minisnip_delimpat . "/e\<cr>gn\"sy"
     catch /E486:/
         " There's no placeholder at all, enter insert mode
         call feedkeys('i', 'n')
         return
     finally
-        let &ws = l:ws
+        let &wrapscan = l:ws
     endtry
 
     " save the contents of the previous placeholder (for backrefs)

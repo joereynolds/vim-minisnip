@@ -39,3 +39,83 @@ Do (Press tab to get the placeholder text):
 
 Expect (No replacements to have taken place):
   placeholder
+
+Given (A buffer with one minisnip placeholder):
+  multilinetest
+
+Do (Perform the replacement):
+  A\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+  This is a multiline
+  test snippet!
+
+Given (A buffer with one minisnip placeholder):
+  |multilinetest
+
+Do (Perform the replacement):
+  A\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+  |This is a multiline
+  test snippet!
+
+Given (A buffer with one minisnip placeholder):
+  multilinetest|
+
+Do (Perform the replacement):
+  $i\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+  This is a multiline
+  test snippet!|
+
+Given (A buffer with one minisnip placeholder):
+  |multilinetest|
+
+Do (Perform the replacement):
+  $i\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+  |This is a multiline
+  test snippet!|
+
+Given (A buffer with one minisnip placeholder):
+   multilinetest
+
+Do (Perform the replacement):
+  A\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+   This is a multiline
+   test snippet!
+
+Given (A buffer with one minisnip placeholder):
+   |multilinetest
+
+Do (Perform the replacement):
+  A\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+   |This is a multiline
+   test snippet!
+
+Given (A buffer with one minisnip placeholder):
+   multilinetest|
+
+Do (Perform the replacement):
+  $i\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+   This is a multiline
+   test snippet!|
+
+Given (A buffer with one minisnip placeholder):
+   |multilinetest|
+
+Do (Perform the replacement):
+  $i\<Tab>
+
+Expect (The buffer to have the replacement text inside):
+   |This is a multiline
+   test snippet!|

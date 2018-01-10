@@ -100,6 +100,17 @@ this looks something like: >
 <
 
 -------------------------------------------------------------------------------
+                                                      *'g:minisnip_evalmarker'*
+Default: '`'
+
+Marks a template as meant to be skipped when evaluating, so that it is not
+selected, but instead the next placeholder is selected. Best if combined with
+the |'g:minisnip_evalmarker'|.
+this looks something like: >
+    It has been {{+`~localtime()+}} seconds since the Unix epoch
+<
+
+-------------------------------------------------------------------------------
                                                    *'g:minisnip_backrefmarker'*
 Default: '\\~'
 

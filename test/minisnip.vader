@@ -22,6 +22,15 @@ Do (Press tab to get to the placeholder text):
 Expect (Only the placeholder text to remain):
   This is a test
 
+Given (A buffer with a named skipped placeholder):
+  skipme
+
+Do (Press tab to get to the placeholder text):
+  A\<Tab>second
+
+Expect (Only the placeholder text to remain):
+  first second
+
 Given php (A buffer with a php filetype):
   placeholder
 

@@ -100,15 +100,17 @@ this looks something like: >
 <
 
 -------------------------------------------------------------------------------
-                                                      *'g:minisnip_evalmarker'*
+                                                      *'g:minisnip_skipmarker'*
 Default: '`'
 
 Marks a template as meant to be skipped when evaluating, so that it is not
-selected, but instead the next placeholder is selected. Best if combined with
-the |'g:minisnip_evalmarker'|.
-this looks something like: >
-    It has been {{+`~localtime()+}} seconds since the Unix epoch
-<
+selected, but instead the next placeholder is selected. It is most useful if
+combined with the |'g:minisnip_evalmarker'|.
+An example: >
+    {{+`~strftime("%Y-%m-%d")+}} {{++}}
+
+This will be expanded to the current date and place the cursor after the date
+stamp.
 
 -------------------------------------------------------------------------------
                                                    *'g:minisnip_backrefmarker'*

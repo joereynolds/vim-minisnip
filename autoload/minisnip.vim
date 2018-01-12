@@ -124,10 +124,13 @@ function! s:SelectPlaceholder() abort
     let @s=substitute(@s, '\V' . g:minisnip_startdelim, '', '')
     let @s=substitute(@s, '\V' . g:minisnip_enddelim, '', '')
 
-    let l:skip = 0
-    if @s =~ '\V\^' . g:minisnip_skipmarker
-       let @s=substitute(@s, '\V\^' . g:minisnip_skipmarker , '', '')
+    if @s =~ '\V\^' . g:minisnip_evalmarker
        let l:skip = 1
+    elseif @s =~ '\V\^' . g:minisnip_donotskipmarker . g:minisnip_evalmarker
+       let @s=substitute(@s, '\V\^' . g:minisnip_donotskipmarker , '', '')
+       let l:skip = 0
+    else
+       let l:skip = 0
     endif
 
     " is this placeholder marked as 'evaluate'?

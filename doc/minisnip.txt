@@ -98,19 +98,24 @@ Marks a template as meant to be executed as VimScript. With the default value,
 this looks something like: >
     It has been {{+~localtime()+}} seconds since the Unix epoch
 <
+The placeholder is not selected, but instead after the evaluation the next
+placeholder is selected. This behaviour can be altered with the
+|'g:minisnip_donotskipmarker'|.
 
 -------------------------------------------------------------------------------
-                                                      *'g:minisnip_skipmarker'*
+                                                 *'g:minisnip_donotskipmarker'*
 Default: '`'
 
-Marks a template as meant to be skipped when evaluating, so that it is not
-selected, but instead the next placeholder is selected. It is most useful if
-combined with the |'g:minisnip_evalmarker'|.
-An example: >
-    {{+`~strftime("%Y-%m-%d")+}} {{++}}
+By default when selecting a placeholder with the |'g:minisnip_evalmarker'| the
+next placeholder is selected after evaluation. To mark a placeholder which is
+to be evaluated so that it is selected after evaluation use the
+|'g:minisnip_donotskipmarker'|. This way you can easily modify the value of
+the snippet.
 
-This will be expanded to the current date and place the cursor after the date
-stamp.
+An example: >
+    {{+`~strftime("%Y-%m-%d")+}}
+<
+This will be expanded to the current date and select the timestamp.
 
 -------------------------------------------------------------------------------
                                                    *'g:minisnip_backrefmarker'*

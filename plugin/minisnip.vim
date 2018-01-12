@@ -10,7 +10,7 @@ let g:minisnip_trigger = get(g:, 'minisnip_trigger', '<Tab>')
 let g:minisnip_startdelim = get(g:, 'minisnip_startdelim', '{{+')
 let g:minisnip_enddelim = get(g:, 'minisnip_enddelim', '+}}')
 let g:minisnip_evalmarker = get(g:, 'minisnip_evalmarker', '~')
-let g:minisnip_skipmarker = get(g:, 'minisnip_skipmarker', '`')
+let g:minisnip_donotskipmarker = get(g:, 'minisnip_donotskipmarker', '`')
 let g:minisnip_backrefmarker = get(g:, 'minisnip_backrefmarker', '\\~')
 
 " this is the pattern used to find placeholders

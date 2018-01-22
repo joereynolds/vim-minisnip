@@ -128,3 +128,12 @@ Do (Perform the replacement):
 Expect (The buffer to have the prefixed and suffixed multiline replacement text inside):
    |This is a multiline
    test snippet!X
+
+Given (A snippet with ordered placeholders):
+  order
+
+Do (Perform the replacement):
+  A\<Tab>two\<Tab>one
+
+Expect (Expand the final placeholder last):
+  one two

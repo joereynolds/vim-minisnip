@@ -9,12 +9,19 @@ let g:minisnip_dir = get(g:, 'minisnip_dir', '~/.vim/minisnip')
 let g:minisnip_trigger = get(g:, 'minisnip_trigger', '<Tab>')
 let g:minisnip_startdelim = get(g:, 'minisnip_startdelim', '{{+')
 let g:minisnip_enddelim = get(g:, 'minisnip_enddelim', '+}}')
+let g:minisnip_finalstartdelim = get(g:, 'minisnip_finalstartdelim', '{{-')
+let g:minisnip_finalenddelim = get(g:, 'minisnip_finalenddelim', '-}}')
 let g:minisnip_evalmarker = get(g:, 'minisnip_evalmarker', '~')
 let g:minisnip_donotskipmarker = get(g:, 'minisnip_donotskipmarker', '`')
 let g:minisnip_backrefmarker = get(g:, 'minisnip_backrefmarker', '\\~')
 
 " this is the pattern used to find placeholders
 let g:minisnip_delimpat = '\V' . g:minisnip_startdelim . '\.\{-}' . g:minisnip_enddelim
+
+" this is the pattern used to find placeholders
+let g:minisnip_finaldelimpat = '\V' . g:minisnip_finalstartdelim .
+         \ '\.\{-}' .
+         \ g:minisnip_finalenddelim
 
 " plug mappings
 " the eval/escape charade is to convert ex. <Tab> into a literal tab, first

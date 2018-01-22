@@ -135,5 +135,18 @@ of how it can be used: >
 This will automatically fill the `#define` line with the value entered on the
 `#ifndef` line upon jumping to it.
 
+-------------------------------------------------------------------------------
+                                                 *'g:minisnip_finalstartdelim'*
+                                                        *'g:minisnip_enddelim'*
+Defaults: '{{-', '-}}'
+
+The start and end delimiters of the final placeholder string to use. While the
+normal placeholders will be dealt with in oder they apear in the snippet,
+these placeholders will be targeted last.>
+    # BEGIN FUNCTON {{++}}
+    {{--}}
+    # END FUNCTION {{+~\~1+}}
+<
+
 
  vim:tw=78:fo=tcq2:isk=!-~,^*,^\|,^\":ts=8:ft=help:norl:

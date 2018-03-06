@@ -155,3 +155,12 @@ Do (Perform the replacement):
 
 Expect (The buffer to have the replacement text in correct position):
   	This is a test snippet and other text
+
+Given (some text, test the helptags):
+  error:
+
+Do (generate the helptags):
+  :execute ':normal! A' . execute(':silent! helptags ./doc')
+
+Expect (no error in generating the helptags):
+  error:

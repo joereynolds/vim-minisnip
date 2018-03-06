@@ -137,7 +137,7 @@ This will automatically fill the `#define` line with the value entered on the
 
 -------------------------------------------------------------------------------
                                                  *'g:minisnip_finalstartdelim'*
-                                                        *'g:minisnip_enddelim'*
+                                                   *'g:minisnip_finalenddelim'*
 Defaults: '{{-', '-}}'
 
 The start and end delimiters of the final placeholder string to use. While the

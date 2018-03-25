@@ -43,7 +43,7 @@ function! minisnip#Minisnip() abort
         " go to the position at the beginning of the snippet
         execute ':normal! '.(s:begcol - strchars(s:cword)).'|'
         " delete the snippet
-        execute ':normal! '.strchars(s:cword).'x'
+        execute ':normal! '.strchars(s:cword).'"_x'
 
         if virtcol('.') >= (s:begcol - strchars(s:cword))
            " there is something following the snippet
@@ -67,7 +67,7 @@ function! minisnip#Minisnip() abort
 
         if strchars(l:ws) > 0
            " remove the padding of the first line of the snippet
-           execute ':normal! j0' . strchars(l:ws) . 'xk$'
+           execute ':normal! j0' . strchars(l:ws) . '"_xk$'
         endif
         join!
 
@@ -159,7 +159,7 @@ function! s:SelectPlaceholder() abort
 
     if empty(@s)
         " the placeholder was empty, so just enter insert mode directly
-        normal! gvd
+        normal! gv"_d
         call feedkeys(col("'>") - l:slen >= col('$') - 1 ? 'a' : 'i', 'n')
     elseif l:skip == 1
        normal! gv"sp

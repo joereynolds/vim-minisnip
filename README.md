@@ -6,7 +6,7 @@ This fork has the following (backwards compatible) fixes/improvements:
 - Installation instructions in README
 - Avoid multiple loads of the plugin
 
-It does not break compatibility with the original vim-minisnip, only improves it.
+It does not break compatibility with the [original vim-minisnip](https://github.com/KeyboardFire/vim-minisnip], only improves it.
                
                _       _           _
      _ __ ___ (_)_ __ (_)___ _ __ (_)_ __
@@ -28,20 +28,20 @@ Use your favourite plugin manager to install minisnip:
 #### [vim-plug](https://github.com/junegunn/vim-plug):
 
 ```vim
-Plug 'KeyboardFire/vim-minisnip'
+Plug 'joereynolds/vim-minisnip'
 ```
 
 #### [Pathogen](https://github.com/tpope/vim-pathogen):
 
 ```bash
 cd ~/.vim/bundle
-git clone git://github.com/KeyboardFire/vim-minisnip.git
+git clone git://github.com/joereynolds/vim-minisnip.git
 ```
 
 #### [NeoBundle](https://github.com/Shougo/neobundle.vim)
 
 ```vim
-NeoBundle 'KeyboardFire/vim-minisnip'
+NeoBundle 'joereynolds/vim-minisnip'
 ```
 
 ## Usage

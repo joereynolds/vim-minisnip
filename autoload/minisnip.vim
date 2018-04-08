@@ -41,7 +41,9 @@ function! minisnip#Minisnip() abort
 
         " remove the snippet keyword
         " go to the position at the beginning of the snippet
-        execute ':normal! '.(s:begcol - strchars(s:cword)).'|'
+        let pos = getpos('.')
+        let pos[2] = s:begcol - strchars(s:cword)
+        call setpos('.', pos)
         " delete the snippet
         execute ':normal! '.strchars(s:cword).'"_x'
 

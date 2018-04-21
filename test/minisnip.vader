@@ -164,3 +164,20 @@ Do (generate the helptags):
 
 Expect (no error in generating the helptags):
   error:
+
+Given (lorem placeholder):
+  lorem namedplaceholder
+
+Execute (Clear search history):
+  for _ in range(&history)
+    call histdel('/', -1)
+  endfor
+
+Do (search "lorem" and replace the placeholder):
+  /lorem\<Cr>A\<Tab>ipsum
+
+Expect (replacement works as expected):
+  lorem ipsum
+
+Execute (Assert search register is still "lorem"):
+  AssertEqual "lorem", @/

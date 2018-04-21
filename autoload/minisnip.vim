@@ -94,14 +94,17 @@ endfunction
 
 " this is the function that finds and selects the next placeholder
 function! s:SelectPlaceholder() abort
-    " don't clobber s register
+    " don't clobber registers
     let l:old_s = @s
+    let l:old_search = @/
 
     " get the contents of the placeholder
     " we use /e here in case the cursor is already on it (which occurs ex.
     "   when a snippet begins with a placeholder)
-    " we also use keeppatterns to avoid clobbering the search history /
-    "   highlighting all the other placeholders
+    " we also use keeppatterns to avoid highlighting all the other
+    "   placeholders
+    " we delete the last entry of the search history to keep the search
+    "   history clean
     try
         " gn misbehaves when 'wrapscan' isn't set (see vim's #1683)
         let [l:ws, &wrapscan] = [&wrapscan, 1]
@@ -126,9 +129,13 @@ function! s:SelectPlaceholder() abort
             return
         finally
             let &wrapscan = l:ws
+             " delete the history of the previous search
+            call histdel('/', -1)
         endtry
     finally
         let &wrapscan = l:ws
+         " delete the history of the previous search
+        call histdel('/', -1)
     endtry
 
     " save the contents of the previous placeholder (for backrefs)
@@ -157,21 +164,31 @@ function! s:SelectPlaceholder() abort
         let @s=eval(@s)
     endif
 
+    normal! gv"_d
     if empty(@s)
         " the placeholder was empty, so just enter insert mode directly
-        normal! gv"_d
         call feedkeys(col("'>") - l:slen >= col('$') - 1 ? 'a' : 'i', 'n')
-    elseif l:skip == 1
-       normal! gv"sp
-       let @s = l:old_s
-       call s:SelectPlaceholder()
     else
-        " paste the placeholder's default value in and enter select mode on it
-        execute "normal! gv\"spgv\<C-g>"
+        " the placeholder was not empty, so paste the content of the
+        " placeholder
+        if col('.') == col('$') - 1
+           execute "normal! \"sp$"
+         else
+           execute "normal! \"sP`]l"
+         endif
+        if l:skip == 1
+            " skip to next placeholder
+            let @s = l:old_s
+            call s:SelectPlaceholder()
+        else
+            " select the placeholder and enter insert mode
+            execute "normal! `[v`]\<C-g>"
+        endif
     endif
 
-    " restore old value of s register
+    " restore old values of registers
     let @s = l:old_s
+    let @/ = l:old_search
 endfunction
 
 function! minisnip#complete() abort

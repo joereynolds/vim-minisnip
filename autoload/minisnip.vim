@@ -122,10 +122,11 @@ function! s:SelectPlaceholder() abort
             let @s=substitute(@s, '\V' . g:minisnip_finalenddelim, '', '')
         catch /E486:/
             " There's no placeholder at all, enter insert mode
-            call feedkeys('i', 'n')
+            call feedkeys('A', 'n')
             return
         finally
             let &wrapscan = l:ws
+            unlet! s:minisnip_selected_text
         endtry
     finally
         let &wrapscan = l:ws
@@ -141,6 +142,20 @@ function! s:SelectPlaceholder() abort
        let l:skip = 0
     else
        let l:skip = 0
+    endif
+
+    " is this placeholder marked as 'visual'?
+    if @s =~ '\V\^' . g:minisnip_visualmarker
+        " remove the marker
+        let @s=substitute(@s, '\V\^' . g:minisnip_visualmarker, '', '')
+        if exists('s:minisnip_selected_text')
+            " get the text
+            let @s=s:minisnip_selected_text
+        endif
+        let l:visualmarker = 1
+        let l:skip = 1
+    else
+        let l:visualmarker = 0
     endif
 
     " is this placeholder marked as 'evaluate'?
@@ -163,6 +178,10 @@ function! s:SelectPlaceholder() abort
         call feedkeys(col("'>") - l:slen >= col('$') - 1 ? 'a' : 'i', 'n')
     elseif l:skip == 1
        normal! gv"sp
+       if l:visualmarker == 1
+           " if the text came by replacing a visual marker, indent the same
+           normal! gv=`]
+       endif
        let @s = l:old_s
        call s:SelectPlaceholder()
     else
@@ -172,6 +191,14 @@ function! s:SelectPlaceholder() abort
 
     " restore old value of s register
     let @s = l:old_s
+endfunction
+
+" function to get the selected text in a variable
+function! minisnip#CopyVisualSelection() abort
+    execute "'<,'>d"
+    let s:minisnip_selected_text = substitute(@", '\n\+$', '', '')
+    execute "normal! O\<Space>\<BS>\<Esc>"
+    startinsert!
 endfunction
 
 function! minisnip#complete() abort

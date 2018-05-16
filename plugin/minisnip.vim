@@ -12,6 +12,7 @@ let g:minisnip_enddelim = get(g:, 'minisnip_enddelim', '+}}')
 let g:minisnip_finalstartdelim = get(g:, 'minisnip_finalstartdelim', '{{-')
 let g:minisnip_finalenddelim = get(g:, 'minisnip_finalenddelim', '-}}')
 let g:minisnip_evalmarker = get(g:, 'minisnip_evalmarker', '~')
+let g:minisnip_visualmarker = get(g:, 'minisnip_visualmarker', '~#')
 let g:minisnip_donotskipmarker = get(g:, 'minisnip_donotskipmarker', '`')
 let g:minisnip_backrefmarker = get(g:, 'minisnip_backrefmarker', '\\~')
 
@@ -33,11 +34,16 @@ snoremap <script> <expr> <Plug>(minisnip) minisnip#ShouldTrigger() ?
             \"\<esc>:call \minisnip#Minisnip()\<cr>" :
             \eval('"' . escape(g:minisnip_trigger, '\"<') . '"')
 inoremap <silent> <Plug>(minisnip-complete) <C-r>=minisnip#complete()<CR>
+xnoremap <silent> <Plug>(minisnip-visual) :<C-u>call minisnip#CopyVisualSelection()<CR>
 
 " add the default mappings if the user hasn't defined any
 if !hasmapto('<Plug>(minisnip)')
     execute 'imap <unique> ' . g:minisnip_trigger . ' <Plug>(minisnip)'
     execute 'smap <unique> ' . g:minisnip_trigger . ' <Plug>(minisnip)'
+endif
+" visual selection
+if !hasmapto('<Plug>(minisnip-visual)')
+    execute 'xmap <unique> ' . g:minisnip_trigger . ' <Plug>(minisnip-visual)'
 endif
 " Completion
 if !hasmapto('<Plug>(minisnip-complete)')

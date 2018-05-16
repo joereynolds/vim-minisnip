@@ -136,6 +136,33 @@ This will automatically fill the `#define` line with the value entered on the
 `#ifndef` line upon jumping to it.
 
 -------------------------------------------------------------------------------
+                                                   *'g:minisnip_visualmarker'*
+Default: '~#'
+
+Marks a "visual" placeholder that gets replaced with the last visually
+selected text; after selecting the text, |'g:minisnip_trigger'| needs to be
+pressed before starting out with triggering a snippet.
+Here is an example of how it can be used: >
+    if (cond) {
+        {{+~#+}}
+    }
+
+Say the following text has to be surrounded by the above `if` snippet:
+    x = 10;
+    y = 20;
+
+First select the text and press `Tab` (or whatever is the value of
+|'g:minisnip_trigger'|), then trigger the `if` snippet as usual. Once the
+control reaches the visual placeholder, the output will be the following:
+    if (cond) {
+        x = 10;
+        y = 20;
+    }
+
+In case there is no text that was copied from the visual mode previously,
+the placeholder will simply land you to the insert mode.
+
+-------------------------------------------------------------------------------
                                                  *'g:minisnip_finalstartdelim'*
                                                    *'g:minisnip_finalenddelim'*
 Defaults: '{{-', '-}}'

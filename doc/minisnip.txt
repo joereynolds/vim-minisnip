@@ -42,8 +42,8 @@ MAPPINGS                                                    *minisnip-mappings*
 -------------------------------------------------------------------------------
                     *minisnip_<C-x><C-t>*
 <C-x><C-t>          Start |ins-completion| for the snippet. Press <C-t> again
-                    to go to the next snippet; press <CR> or <Tab> to complete
-                    it.
+                    to go to the next snippet; press <C-y> or <Tab> to
+                    complete it.
 
 ===============================================================================
 CONFIGURATION                                          *minisnip-configuration*
@@ -142,8 +142,8 @@ Defaults: '{{-', '-}}'
 
 The start and end delimiters of the final placeholder string to use. While the
 normal placeholders will be dealt with in the order they appear in the snippet,
-these placeholders will be targeted last.>
-    # BEGIN FUNCTON {{++}}
+these placeholders will be targeted last. >
+    # BEGIN FUNCTION {{++}}
     {{--}}
     # END FUNCTION {{+~\~1+}}
 <

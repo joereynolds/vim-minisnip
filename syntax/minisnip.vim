@@ -28,11 +28,14 @@ if !exists("g:minisnip_nested_syntax")
 endif
 
 if g:minisnip_nested_syntax
-    let filetype = get(matchlist(expand("%:t:r"), '_\([^_]\+\)_.\+$'), 1, '')
-    if !empty(filetype)
-        silent! exe "runtime! syntax/" . filetype . ".vim"
-        unlet! b:current_syntax
+    let s:filetype = get(matchlist(expand("%:t:r"), '_\([^_]\+\)_.\+$'), 1, '')
+    if !empty(s:filetype)
+        for s:ft in split(s:filetype, '\.')
+            silent! exe "runtime! syntax/" . s:ft . ".vim"
+            unlet! b:current_syntax
+        endfor
     endif
+    unlet s:filetype s:ft
 endif
 
 " Get the minisnip defined delimiters

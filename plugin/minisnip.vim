@@ -35,12 +35,16 @@ snoremap <script> <expr> <Plug>(minisnip) minisnip#ShouldTrigger() ?
 inoremap <silent> <Plug>(minisnip-complete) <C-r>=minisnip#complete()<CR>
 
 " add the default mappings if the user hasn't defined any
-if !hasmapto('<Plug>(minisnip)')
+if !hasmapto('<Plug>(minisnip)', 'i') && mapcheck(g:minisnip_trigger, 'i') ==# ''
     execute 'imap <unique> ' . g:minisnip_trigger . ' <Plug>(minisnip)'
+endif
+
+if !hasmapto('<Plug>(minisnip)', 's') && mapcheck(g:minisnip_trigger, 's') ==# ''
     execute 'smap <unique> ' . g:minisnip_trigger . ' <Plug>(minisnip)'
 endif
+
 " Completion
-if !hasmapto('<Plug>(minisnip-complete)')
+if !hasmapto('<Plug>(minisnip-complete)', 'i')
     imap <C-x><C-t> <Plug>(minisnip-complete)
     inoremap <expr> <C-t> pumvisible() ?  "\<C-n>" : "\<C-t>"
     imap <expr> <C-y> pumvisible() ? "\<Tab>" : "\<C-y>"

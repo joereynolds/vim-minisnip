@@ -38,6 +38,7 @@ function! minisnip#Minisnip() abort
         " adjust the indentation, use the current line as reference
         let l:ws = matchstr(getline(line('.')), '^\s\+')
         let l:lns = map(readfile(s:snippetfile), 'empty(v:val)? v:val : l:ws.v:val')
+        let l:nlines = len(l:lns)
 
         " remove the snippet keyword
         " go to the position at the beginning of the snippet
@@ -73,6 +74,9 @@ function! minisnip#Minisnip() abort
 
         " go to the beginning of the snippet
         execute ':normal! '.(s:begcol - strchars(s:cword)).'|'
+
+        " auto indent
+        execute ':normal! =' . l:nlines . 'j'
 
         " select the first placeholder
         call s:SelectPlaceholder()

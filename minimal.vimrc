@@ -16,4 +16,3 @@ call plug#begin('/tmp/plugged')
 Plug 'joereynolds/vim-minisnip'
 let g:minisnip_dir='/tmp/plugged/snip'
 call plug#end()
-set expandtab

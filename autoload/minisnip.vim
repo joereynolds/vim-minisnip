@@ -152,8 +152,8 @@ function! s:SelectPlaceholder() abort
             \"\\=\"'\" . substitute(get(
             \    s:placeholder_texts,
             \    g:minisnip_backreffirst ?
-						\        str2nr(submatch(1)) :
-						\        len(s:placeholder_texts) - str2nr(submatch(1)), ''
+            \        str2nr(submatch(1)) :
+            \        len(s:placeholder_texts) - str2nr(submatch(1)), ''
             \), \"'\", \"''\", 'g') . \"'\"", 'g')
         " evaluate what's left
         let @s=eval(@s)

@@ -1,3 +1,5 @@
+**NOTE** This repository is archived and read-only. This fork of `vim-minisnip` was meant to be for simple bug fixes while retaining the simplicity of the original. I do not wish to add features to `vim-minisnip` (in fact, I want to remove some). 
+
 This fork has the following (backwards compatible) fixes/improvements:
 
 - Indent snippets when inserted

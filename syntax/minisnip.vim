@@ -26,6 +26,8 @@ endif
 " Get the minisnip defined delimiters
 exe "syntax match minisnipKeyword /" . g:minisnip_startdelim . "/"
 exe "syntax match minisnipKeyword /" . g:minisnip_enddelim . "/"
+exe "syntax match minisnipKeyword /" . g:minisnip_finalstartdelim . "/"
+exe "syntax match minisnipKeyword /" . g:minisnip_finalenddelim . "/"
 
 highlight default link minisnipKeyword Keyword
 

@@ -123,8 +123,8 @@ Default: '\\~'
 
 When this is present, followed by a single digit `n`, in a placeholder that
 also starts with |'g:minisnip_evalmarker'|, it will be replaced with the `n`th
-to last previous placeholder value, surrounded by quotes. Here is an example
-of how it can be used: >
+placeholder value, according to |'g:minisnip_backreffirst'|, surrounded by
+quotes. Here is an example of how it can be used: >
     #ifndef {{+INCLUDE_GUARD+}}
     #define {{+~\~1+}}
 
@@ -134,6 +134,14 @@ of how it can be used: >
 <
 This will automatically fill the `#define` line with the value entered on the
 `#ifndef` line upon jumping to it.
+
+-------------------------------------------------------------------------------
+                                                   *'g:minisnip_backreffirst'*
+Default: 0
+
+If set to 0, backreferences will be replaced with the `n`th to last
+placeholder value. If set to a non 0 value, the `n`th from first placeholder
+will be used instead.
 
 -------------------------------------------------------------------------------
                                                  *'g:minisnip_finalstartdelim'*

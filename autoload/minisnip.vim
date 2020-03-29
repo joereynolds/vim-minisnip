@@ -151,7 +151,9 @@ function! s:SelectPlaceholder() abort
         let @s=substitute(@s, '\V' . g:minisnip_backrefmarker . '\(\d\)',
             \"\\=\"'\" . substitute(get(
             \    s:placeholder_texts,
-            \    len(s:placeholder_texts) - str2nr(submatch(1)), ''
+            \    g:minisnip_backreffirst ?
+            \        str2nr(submatch(1)) :
+            \        len(s:placeholder_texts) - str2nr(submatch(1)), ''
             \), \"'\", \"''\", 'g') . \"'\"", 'g')
         " evaluate what's left
         let @s=eval(@s)

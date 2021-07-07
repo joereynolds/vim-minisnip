@@ -62,6 +62,9 @@ Minisnip adds the `minisnip` |filetype| for syntax highlighting to all files
 matching `*/minisnip/*`. If you store your snippets in another directory then
 you'll have to create your own |autocmd| to do this.
 
+Further, if |g:minisnip_nested_syntax| is |TRUE| (the default), filetype aware
+snippets files will be syntax highlighted according to their filetype.
+
 -------------------------------------------------------------------------------
                                                          *'g:minisnip_trigger'*
 Default: '<Tab>'
@@ -148,5 +151,11 @@ these placeholders will be targeted last. >
     # END FUNCTION {{+~\~1+}}
 <
 
+-------------------------------------------------------------------------------
+                                                   *'g:minisnip_nested_syntax'*
+Default: 1
+
+For filetype specific snippets files, include the syntax highlighting for that
+filetype when editing the snippets file.
 
  vim:tw=78:fo=tcq2:isk=!-~,^*,^\|,^\":ts=8:ft=help:norl:
